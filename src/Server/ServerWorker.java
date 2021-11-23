@@ -23,6 +23,7 @@ public class ServerWorker extends Thread{
     Server server;
     ObjectOutputStream oos;
     
+    
     public ServerWorker(Server server, Socket clientSocket) {
         this.clientSocket = clientSocket;
         this.server = server;
@@ -48,9 +49,13 @@ public class ServerWorker extends Thread{
         //lay username, format "name":"tin"
         String usernameRev = ois.readObject().toString();
         
-        List<ServerWorker> WorkerList = server.getListWorker();
-        for(ServerWorker i: WorkerList){
-            i.send("User now: " + usernameRev);
+        while(true){
+            String messageRev = ois.readObject().toString();
+//            System.out.println(messageRev);
+            List<ServerWorker> WorkerList = server.getListWorker();;
+            for(ServerWorker i: WorkerList){
+                i.send(usernameRev + ": " + messageRev);
+            }
         }
     }
     
